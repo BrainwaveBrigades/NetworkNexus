@@ -12,12 +12,12 @@ const AuthForm = ({ type }) => {
 
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData);
-    const { email, password, name } = data;
+    const { email, password, role } = data;
 
     try {
       if (type === "sign-up") {
         await createUserWithEmailAndPassword(auth, email, password);
-        alert("Account created successfully!");
+        alert(`Account created successfully as ${role}!`);
       } else {
         await signInWithEmailAndPassword(auth, email, password);
         alert("Login successful!");
@@ -36,7 +36,12 @@ const AuthForm = ({ type }) => {
       {type === "sign-up" && (
         <div className="input-field">
           <i className="fas fa-user"></i>
-          <input type="text" name="name" placeholder="Full Name" required />
+          <select name="role" required>
+            <option value="" disabled selected>Select Your Role</option>
+            <option value="alumni">Alumni</option>
+            <option value="student">Student</option>
+            <option value="admin">Admin</option>
+          </select>
         </div>
       )}
 
