@@ -7,7 +7,7 @@ const SocialLogin = () => {
 
   return (
     <div className="social-media">
-      {["google", "github", "linkedin-in"].map((provider) => (
+      {["google", "github"].map((provider) => (
         <button key={provider} className="social-icon" onClick={() => handleSocialAuth(provider)}>
           <i className={`fab fa-${provider}`}></i>
         </button>
