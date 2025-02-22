@@ -1,17 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
+import { auth } from "../../firebase/firebase";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import SocialLogin from "./SocialLogin";
 
 const AuthForm = ({ type }) => {
-  const handleSubmit = (e) => {
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData);
-    console.log(`${type === "sign-in" ? "Sign In" : "Sign Up"}:`, data);
+    const { email, password, name } = data;
+
+    try {
+      if (type === "sign-up") {
+        await createUserWithEmailAndPassword(auth, email, password);
+        alert("Account created successfully!");
+      } else {
+        await signInWithEmailAndPassword(auth, email, password);
+        alert("Login successful!");
+      }
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit} className={`${type}-form`}>
       <h2 className="title">{type === "sign-in" ? "Sign In" : "Sign Up"}</h2>
+
+      {error && <p className="error-text">{error}</p>}
 
       {type === "sign-up" && (
         <div className="input-field">
