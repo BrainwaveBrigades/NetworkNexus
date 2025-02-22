@@ -4,6 +4,7 @@ import AuthPage from "./pages/Auth/AuthPage";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AlumniDashboard from "./pages/alumni/AlumniDashboard";
 import StudentDashboard from "./pages/student/StudentDashboard";
+import PrivateRoute from "./routes/PrivateRoute"; // Import Protected Route
 import "./styles/style.css";
 
 function App() {
@@ -11,9 +12,32 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={<AuthPage />} />
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/alumni" element={<AlumniDashboard />} />
-        <Route path="/student" element={<StudentDashboard />} />
+
+        {/* Protected Routes */}
+        <Route
+          path="/admin"
+          element={
+            <PrivateRoute allowedRoles={["admin"]}>
+              <AdminDashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/alumni"
+          element={
+            <PrivateRoute allowedRoles={["alumni"]}>
+              <AlumniDashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/student"
+          element={
+            <PrivateRoute allowedRoles={["student"]}>
+              <StudentDashboard />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </div>
   );
